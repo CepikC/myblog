@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Витрина товаров</title>
+</head>
+
+<body>
+<h1>Лента постов</h1>
+
+<form method="GET" th:action="@{/posts/add}">
+    <button style="float:right;">ДОБАВИТЬ ПОСТ</button>
+</form>
+
+<table style="width:50%;margin-left:auto;margin-right:auto;">
+    <tr>
+        <td>
+            <form method="GET" th:action="@{/posts}">
+                <p>
+                    <label for="search">Найти по тегу: </label>
+                    <input id="search" style="width:300px;" name="search" th:value="${search}">
+                    <button type="submit">&#128269;</button>
+                </p>
+                <p>
+                    <label for="pageSize">Число постов: </label>
+                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                        <option value="5" th:selected="${paging.pageSize == 5}">5</option>
+                        <option value="10" th:selected="${paging.pageSize == 10}">10</option>
+                        <option value="20" th:selected="${paging.pageSize == 20}">20</option>
+                        <option value="50" th:selected="${paging.pageSize == 50}">50</option>
+                        <option value="100" th:selected="${paging.pageSize == 100}">100</option>
+                    </select>
+                </p>
+                <p>
+                    <button th:if="${paging.hasPrevious}" name="pageNumber" th:value="${paging.pageNumber - 1}">&lt;</button>
+                    <span th:text="'Страница: ' + ${paging.pageNumber}"></span>
+                    <button th:if="${paging.hasNext}" name="pageNumber" th:value="${paging.pageNumber + 1}">&gt;</button>
+                </p>
+            </form>
+        </td>
+    </tr>
+
+    <tr th:each="post : ${posts}">
+        <td style="border-bottom:thin solid;">
+            <h2 th:text="${post.title}">Заголовок</h2>
+            <p>
+                <a th:href="@{/posts/{id}(id=${post.id})}">
+                    <img height="300" th:src="@{/posts/images/{id}(id=${post.id})}" alt="Картинка поста">
+                </a>
+            </p>
+            <p th:text="${post.textPreview}">Текст превью</p>
+            <p>
+                <span th:text="'👍 ' + ${post.likesCount}"></span>
+                <span th:text="'✉ ' + ${#lists.size(post.comments)}" style="margin-left: 10px;"></span>
+            </p>
+            <p>
+                <span th:each="tag : ${post.tags}" th:text="'#' + ${tag} + ' '"></span>
+            </p>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
