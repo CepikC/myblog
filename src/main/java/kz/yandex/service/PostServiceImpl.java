@@ -21,6 +21,7 @@ public class PostServiceImpl implements PostService {
         this.postRepository = postRepository;
     }
 
+    @Override
     public Long save(String title, String text, String tags, MultipartFile image) {
         String imageBase64 = null;
 
@@ -40,6 +41,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(title, text, imageBase64, tagList);
     }
 
+    @Override
     public void update(Long id, String title, String text, String tags, MultipartFile image) {
         String imageBase64 = null;
 
@@ -59,6 +61,7 @@ public class PostServiceImpl implements PostService {
         postRepository.update(id, title, text, imageBase64, tagList);
     }
 
+    @Override
     public List<Post> getPosts(String search, int pageSize, int pageNumber) {
         int offset = (pageNumber - 1) * pageSize;
         if (search.isBlank()) {
@@ -67,6 +70,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.findPostsByTag(search, pageSize, offset);
     }
 
+    @Override
     public boolean hasNext(String search, int pageSize, int pageNumber) {
         int offset = pageSize * pageNumber;
         return search.isBlank()
@@ -74,28 +78,14 @@ public class PostServiceImpl implements PostService {
                 : !postRepository.findPostsByTag(search, pageSize, offset).isEmpty();
     }
 
+    @Override
     public Post getPostById(Long id) {
         return postRepository.findById(id);
     }
 
+    @Override
     public void delete(Long id) {
         postRepository.delete(id);
-    }
-
-    public void addComment(Long postId, String text) {
-        postRepository.addComment(postId, text);
-    }
-
-    public void updateLikeCount(Long postId, boolean like) {
-        postRepository.updateLike(postId, like ? 1 : -1);
-    }
-
-    public void deleteComment(Long postId, Long commentId) {
-        postRepository.deleteComment(commentId);
-    }
-
-    public void updateComment(Long postId, Long commentId, String text) {
-        postRepository.updateComment(commentId, text);
     }
 
 }

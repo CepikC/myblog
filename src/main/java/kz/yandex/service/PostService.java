@@ -19,12 +19,5 @@ public interface PostService {
 
     void delete(Long id);
 
-    void addComment(Long postId, String text);
-
-    void updateLikeCount(Long postId, boolean like);
-
-    void deleteComment(Long postId, Long commentId);
-
-    void updateComment(Long postId, Long commentId, String text);
 
 }

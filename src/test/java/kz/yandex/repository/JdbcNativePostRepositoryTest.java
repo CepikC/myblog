@@ -72,38 +72,6 @@ public class JdbcNativePostRepositoryTest {
         assertEquals("Only text", post.getText());
     }
 
-    @Test
-    void testAddComment() {
-        ((JdbcNativePostRepository) postRepository).addComment(postId, "New comment");
-        Post post = postRepository.findById(postId);
-        assertEquals(1, post.getComments().size());
-        assertEquals("New comment", post.getComments().get(0).getText());
-    }
-
-    @Test
-    void testUpdateComment() {
-        ((JdbcNativePostRepository) postRepository).addComment(postId, "Old");
-        Long commentId = jdbcTemplate.queryForObject("SELECT id FROM comments WHERE post_id = ?", Long.class, postId);
-        ((JdbcNativePostRepository) postRepository).updateComment(commentId, "Updated comment");
-        Post post = postRepository.findById(postId);
-        assertEquals("Updated comment", post.getComments().get(0).getText());
-    }
-
-    @Test
-    void testDeleteComment() {
-        ((JdbcNativePostRepository) postRepository).addComment(postId, "Will be deleted");
-        Long commentId = jdbcTemplate.queryForObject("SELECT id FROM comments WHERE post_id = ?", Long.class, postId);
-        ((JdbcNativePostRepository) postRepository).deleteComment(commentId);
-        Post post = postRepository.findById(postId);
-        assertTrue(post.getComments().isEmpty());
-    }
-
-    @Test
-    void testUpdateLike() {
-        ((JdbcNativePostRepository) postRepository).updateLike(postId, 1);
-        Post post = postRepository.findById(postId);
-        assertEquals(1, post.getLikesCount());
-    }
 
     @Test
     void testDeletePost() {

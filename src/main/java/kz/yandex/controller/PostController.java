@@ -79,56 +79,6 @@ class PostController {
         return "post";
     }
 
-    @GetMapping("/images/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") Long id) {
-        Post post = postService.getPostById(id);
-
-        if (post == null || post.getImagePath() == null || post.getImagePath().isBlank()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        try {
-            byte[] imageBytes = Base64.getDecoder().decode(post.getImagePath());
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG); // или .IMAGE_JPEG в зависимости от оригинального формата
-            headers.setContentLength(imageBytes.length);
-
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping("/{id}/comments")
-    public String addComment(@PathVariable("id") Long postId,
-                             @RequestParam("text") String text) {
-        postService.addComment(postId, text);
-        return "redirect:/posts/" + postId;
-    }
-
-    @PostMapping("/{postId}/comments/{commentId}")
-    public String updateComment(@PathVariable("postId") Long postId,
-                                @PathVariable("commentId") Long commentId,
-                                @RequestParam("text") String text) {
-        postService.updateComment(postId, commentId, text);
-        return "redirect:/posts/" + postId;
-    }
-
-    @PostMapping("/{postId}/comments/{commentId}/delete")
-    public String deleteComment(@PathVariable("postId") Long postId,
-                                @PathVariable("commentId") Long commentId) {
-        postService.deleteComment(postId, commentId);
-        return "redirect:/posts/" + postId;
-    }
-
-    @PostMapping("/{id}/like")
-    public String likePost(@PathVariable("id") Long postId,
-                           @RequestParam("like") boolean like) {
-        postService.updateLikeCount(postId, like);
-        return "redirect:/posts/" + postId;
-    }
-
     @GetMapping("/add")
     public String addPostForm(Model model) {
         model.addAttribute("post", new Post());

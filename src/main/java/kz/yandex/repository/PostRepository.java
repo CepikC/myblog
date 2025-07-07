@@ -17,11 +17,4 @@ public interface PostRepository {
 
     Post findById(Long id);
 
-    void addComment(Long postId, String text);
-
-    void updateLike(Long postId, int delta);
-
-    void deleteComment(Long commentId);
-
-    void updateComment(Long commentId, String text);
 }

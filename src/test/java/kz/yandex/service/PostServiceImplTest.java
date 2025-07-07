@@ -94,30 +94,4 @@ class PostServiceImplTest {
         verify(postRepository).delete(5L);
     }
 
-    @Test
-    void testAddComment() {
-        postService.addComment(3L, "Nice!");
-        verify(postRepository).addComment(3L, "Nice!");
-    }
-
-    @Test
-    void testUpdateLikeCount() {
-        postService.updateLikeCount(4L, true);
-        verify(postRepository).updateLike(4L, 1);
-
-        postService.updateLikeCount(4L, false);
-        verify(postRepository).updateLike(4L, -1);
-    }
-
-    @Test
-    void testDeleteComment() {
-        postService.deleteComment(1L, 100L);
-        verify(postRepository).deleteComment(100L);
-    }
-
-    @Test
-    void testUpdateComment() {
-        postService.updateComment(1L, 200L, "Updated");
-        verify(postRepository).updateComment(200L, "Updated");
-    }
 }

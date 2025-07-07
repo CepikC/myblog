@@ -182,28 +182,6 @@ public class JdbcNativePostRepository implements PostRepository {
     }
 
 
-    public void addComment(Long postId, String text) {
-        jdbcTemplate.update(
-                "INSERT INTO comments (post_id, text) VALUES (?, ?)",
-                postId, text
-        );
-    }
-
-    public void updateLike(Long postId, int delta) {
-        jdbcTemplate.update(
-                "UPDATE posts SET likes_count = likes_count + ? WHERE id = ?",
-                delta, postId
-        );
-    }
-
-    public void deleteComment(Long commentId) {
-        jdbcTemplate.update("DELETE FROM comments WHERE id = ?", commentId);
-    }
-
-    public void updateComment(Long commentId, String text) {
-        jdbcTemplate.update("UPDATE comments SET text = ? WHERE id = ?", text, commentId);
-    }
-
 }
 
 
