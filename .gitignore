@@ -1,7 +1,13 @@
+# === Build outputs ===
+/build/
+**/build/
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+**/target/
+
+# === Gradle ===
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

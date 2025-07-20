@@ -1,59 +1,28 @@
 package kz.yandex.controller;
 
-import kz.yandex.configuration.DataSourceConfiguration;
-import kz.yandex.configuration.WebConfiguration;
 import kz.yandex.service.CommentService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringJUnitConfig(classes = {
-        DataSourceConfiguration.class,
-        WebConfiguration.class,
-        CommentControllerTest.TestConfig.class
-})
-@WebAppConfiguration
-@TestPropertySource("classpath:test-application.properties")
+@SpringBootTest(properties = "spring.profiles.active=test")
+@AutoConfigureMockMvc
 class CommentControllerTest {
 
-    @Configuration
-    static class TestConfig {
-        @Bean
-        public CommentController commentController() {
-            return new CommentController(commentService());
-        }
-
-        @Bean
-        public CommentService commentService() {
-            return mock(CommentService.class);
-        }
-    }
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
+    @MockBean
     private CommentService commentService;
 
+    @Autowired
     private MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
 
     @Test
     void testAddComment() throws Exception {
